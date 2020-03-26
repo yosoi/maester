@@ -1,4 +1,4 @@
-README.rst
+README.md
 setup.py
 maester/__init__.py
 maester/main.py
