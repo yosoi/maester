@@ -1,32 +1,18 @@
-import boto3
-import discord
 from dotenv import load_dotenv
+from maester import MaesterClient
 import os
+import sys
 
 
 load_dotenv()
 
-
-TOKEN = os.getenv("TOKEN")
-BOT = os.getenv("BOT")
 ALIAS = os.getenv("ALIAS")
+BOT = os.getenv("BOT")
+TOKEN = os.getenv("TOKEN")
 
+with open(os.path.join(sys.path[0], "pms_only_plz.txt"), "r") as f:
+	messages = f.readlines()
 
-def get_lex_response(lex_client, bot_name, bot_alias, user_id, input_text):
-	return lex_client.post_text(
-		botName = bot_name,
-		botAlias = bot_alias,
-		userId = user_id,
-		inputText = input_text
-	)
+client = MaesterClient(BOT, ALIAS, messages)
+client.run(TOKEN)
 
-
-lex = boto3.client("lex-runtime")
-
-
-user_id = "dev"
-message = "roll"
-response = get_lex_response(lex, BOT, ALIAS, user_id, message)
-
-
-print(response["message"])
