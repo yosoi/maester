@@ -18,13 +18,14 @@ class MaesterClient(discord.Client):
 		if message.author == self.user:
 			return
 		if message.channel.type is discord.ChannelType.private:
-			await message.channel.send("*mumbles incoherently*")
+			response = self.get_lex_response(str(message.author.id), message.content)
+			await message.channel.send(response["message"])
 		elif message.content.lower().startswith("maester"):
 			response = random.choice(self.pm_only_messages)
 			await message.channel.send(response)
 
-	def get_lex_response(user_id, input_text):
-		return self.lex_client.post_content(
+	def get_lex_response(self, user_id, input_text):
+		return self.lex_client.post_text(
 			botName = self.bot_name,
 			botAlias = self.bot_alias,
 			userId = user_id,
